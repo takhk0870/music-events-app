@@ -1,0 +1,78 @@
+[
+  {
+    "id": 1,
+    "name": "サマー・ロック・フェス",
+    "date": "2024-08-12",
+    "time": "18:00〜21:00",
+    "location": "東京ドーム",
+    "artists": ["The Rockers", "Pop Queens", "DJ Future"],
+    "price": "¥1000〜",
+    "scale": "大規模",
+    "links": [
+      { "label": "公式サイト", "url": "https://example.com" },
+      { "label": "チケット購入", "url": "https://tickets.example.com" }
+    ],
+    "genre": "ロック",
+    "region": "東京"
+  },
+  {
+    "id": 2,
+    "name": "夜のジャズライブ",
+    "date": "2024-07-20",
+    "time": "19:00〜22:00",
+    "location": "大阪ホール",
+    "artists": ["Jazz Night"],
+    "price": "無料",
+    "scale": "小規模",
+    "links": [
+      { "label": "イベント詳細", "url": "https://jazznight.example.com" }
+    ],
+    "genre": "ジャズ",
+    "region": "大阪"
+  },
+  {
+    "id": 3,
+    "name": "クラシックの夕べ",
+    "date": "2024-09-01",
+    "time": "17:00〜19:00",
+    "location": "名古屋市民会館",
+    "artists": ["Classic Stars"],
+    "price": "¥2000",
+    "scale": "中規模",
+    "links": [
+      { "label": "公式ページ", "url": "https://classic.example.com" }
+    ],
+    "genre": "クラシック",
+    "region": "名古屋"
+  },
+  {
+    "id": 4,
+    "name": "EDMパーティー",
+    "date": "2024-08-30",
+    "time": "20:00〜24:00",
+    "location": "福岡アリーナ",
+    "artists": ["DJ Future"],
+    "price": "¥1500",
+    "scale": "大規模",
+    "links": [
+      { "label": "イベント詳細", "url": "https://edm.example.com" }
+    ],
+    "genre": "EDM",
+    "region": "福岡"
+  },
+  {
+    "id": 5,
+    "name": "ポップスコンサート",
+    "date": "2024-10-10",
+    "time": "16:00〜18:00",
+    "location": "札幌コンサートホール",
+    "artists": ["Pop Queens"],
+    "price": "¥1200",
+    "scale": "超小規模",
+    "links": [
+      { "label": "チケット", "url": "https://pop.example.com" }
+    ],
+    "genre": "ポップ",
+    "region": "札幌"
+  }
+]

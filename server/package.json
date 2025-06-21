@@ -1,0 +1,28 @@
+{
+  "name": "music-events-server",
+  "version": "1.0.0",
+  "description": "Music Events API Server",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "scrape": "node run-scraper.js",
+    "scrape:python": "python run_python_scraper.py",
+    "scrape:all": "npm run scrape && npm run scrape:python",
+    "install:python": "pip install -r requirements.txt"
+  },
+  "keywords": ["music", "events", "api", "scraping"],
+  "author": "Music Events Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "iconv-lite": "^0.6.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
