@@ -7,9 +7,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "scrape": "node run-scraper.js",
     "scrape:python": "python run_python_scraper.py",
-    "scrape:all": "npm run scrape && npm run scrape:python",
+    "scrape:all": "npm run scrape:python",
     "install:python": "pip install -r requirements.txt"
   },
   "keywords": ["music", "events", "api", "scraping"],

@@ -29,9 +29,9 @@
 - お気に入り機能
 
 ### スクレイピング機能
-- 札幌教育文化会館（Node.js）
-- 東京・大阪の音楽イベント（Python）
-- 自動データ更新
+- **札幌教育文化会館** - Pythonスクレイパー
+- **東京・大阪の音楽イベント** - Pythonスクレイパー
+- 自動データ更新・重複除去
 
 ## セットアップ
 
@@ -84,28 +84,22 @@ npm run dev
 
 ### スクレイピングの実行
 
-#### Node.jsスクレイパー（札幌教育文化会館）
-```bash
-cd server
-npm run scrape
-```
-
-#### Pythonスクレイパー（東京・大阪）
+#### Pythonスクレイパー（全地域）
 ```bash
 cd server
 npm run scrape:python
-```
-
-#### 全スクレイパーの実行
-```bash
-cd server
-npm run scrape:all
 ```
 
 #### カスタムオプション付きスクレイピング
 ```bash
 cd server
 python run_python_scraper.py --days 60 --output custom_events.json
+```
+
+#### 全スクレイパーの実行
+```bash
+cd server
+npm run scrape:all
 ```
 
 ## プロジェクト構造
@@ -117,13 +111,21 @@ music-events/
 │   │   ├── types/         # TypeScript型定義
 │   │   ├── App.tsx        # メインアプリケーション
 │   │   ├── EventDetail.tsx # イベント詳細コンポーネント
-│   │   └── main.tsx       # エントリーポイント
+│   │   ├── main.tsx       # エントリーポイント
+│   │   └── index.css      # スタイル
+│   ├── public/            # 静的ファイル
 │   ├── package.json
-│   └── vite.config.ts
+│   ├── tsconfig.json
+│   ├── vite.config.ts
+│   └── tailwind.config.js
 ├── server/                # バックエンド（Node.js + Python）
 │   ├── routes/           # APIルート
-│   ├── scrapers/         # Node.jsスクレイパー
 │   ├── python_scrapers/  # Pythonスクレイパー
+│   │   ├── base_scraper.py      # 基本スクレイパークラス
+│   │   ├── sapporo_scraper.py   # 札幌教育文化会館
+│   │   ├── tokyo_scraper.py     # 東京音楽イベント
+│   │   ├── osaka_scraper.py     # 大阪音楽イベント
+│   │   └── scraper_manager.py   # スクレイパー管理
 │   ├── data/             # スクレイピングデータ
 │   ├── server.js         # Expressサーバー
 │   ├── requirements.txt  # Python依存関係
@@ -141,13 +143,33 @@ music-events/
 
 ## スクレイピング対象サイト
 
-### Node.jsスクレイパー
-- 札幌教育文化会館 (https://www.kyobun.org/)
-
 ### Pythonスクレイパー
-- 東京音楽イベントサイト
-- 大阪音楽イベントサイト
-- ライブハウス情報サイト
+- **札幌教育文化会館** (https://www.kyobun.org/)
+  - 月別イベントスケジュール
+  - 大ホール・小ホール・ギャラリーのイベント
+  - 音楽・洋舞・邦舞・展示・オペラ・演劇
+- **東京音楽イベントサイト**
+  - ライブハウス情報
+  - 音楽イベント情報
+- **大阪音楽イベントサイト**
+  - ライブハウス情報
+  - 音楽イベント情報
+
+## スクレイピング機能詳細
+
+### 札幌教育文化会館スクレイパー
+- **URL構造**: `https://www.kyobun.org/event_schedule.html?k=lst&ym=YYYYMM`
+- **抽出情報**:
+  - イベント名・日付・会場・ジャンル
+  - 開場・開演時間
+  - アーティスト情報（タイトルから抽出）
+  - イベント規模（会場に基づく推定）
+
+### データ正規化
+- **ジャンル統一**: 音楽→クラシック、洋舞・邦舞→ダンス
+- **規模推定**: 大ホール→大規模、小ホール→中規模、ギャラリー→小規模
+- **地域分類**: 札幌、東京、大阪
+- **重複除去**: 同じ名前・日付のイベントは除外
 
 ## 開発者向け情報
 
@@ -160,24 +182,50 @@ music-events/
 - サーバー負荷軽減のための遅延設定
 - エラーハンドリング
 - データ正規化
+- 重複除去機能
 
 ### データ形式
 ```json
 {
   "id": 1,
   "name": "イベント名",
-  "date": "2024-01-01",
-  "time": "19:00-21:00",
-  "location": "会場名",
+  "date": "2025年6月22日（日）",
+  "time": "15:00開場・16:00開演",
+  "location": "札幌教育文化会館 大ホール",
   "artists": ["アーティスト1", "アーティスト2"],
-  "price": "¥1000",
-  "scale": "中規模",
+  "price": "要確認",
+  "scale": "大規模",
   "links": [{"label": "詳細", "url": "https://..."}],
-  "genre": "ロック",
-  "region": "東京",
-  "source": "スクレイパー名"
+  "genre": "クラシック",
+  "region": "札幌",
+  "source": "札幌教育文化会館",
+  "createdAt": "2024-01-01T00:00:00.000Z"
 }
 ```
+
+## トラブルシューティング
+
+### よくある問題
+
+1. **Pythonスクレイパーが動作しない**
+   ```bash
+   cd server
+   pip install -r requirements.txt
+   ```
+
+2. **フロントエンドのビルドエラー**
+   ```bash
+   cd client
+   npm install
+   npm run build
+   ```
+
+3. **APIサーバーが起動しない**
+   ```bash
+   cd server
+   npm install
+   npm run dev
+   ```
 
 ## ライセンス
 

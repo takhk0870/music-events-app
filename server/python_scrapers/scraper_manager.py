@@ -8,6 +8,7 @@ from typing import List, Dict, Any
 from datetime import datetime
 from .tokyo_scraper import TokyoMusicScraper
 from .osaka_scraper import OsakaMusicScraper
+from .sapporo_scraper import SapporoKyobunScraper
 
 
 class ScraperManager:
@@ -16,6 +17,7 @@ class ScraperManager:
     def __init__(self, data_dir: str = "data"):
         self.data_dir = data_dir
         self.scrapers = {
+            'sapporo': SapporoKyobunScraper(),
             'tokyo': TokyoMusicScraper(),
             'osaka': OsakaMusicScraper(),
         }
@@ -32,7 +34,12 @@ class ScraperManager:
         for region, scraper in self.scrapers.items():
             try:
                 print(f"Scraping {region} events...")
-                events = scraper.scrape_events(days)
+                if region == 'sapporo':
+                    # 札幌は月単位でスクレイピング
+                    months = max(1, days // 30)
+                    events = scraper.scrape_events(months)
+                else:
+                    events = scraper.scrape_events(days)
                 print(f"Found {len(events)} events in {region}")
                 all_events.extend(events)
             except Exception as e:
